@@ -22,10 +22,10 @@ const App = (props: { path: string }) => (
 const app = new Hono();
 
 app.get('*', (ctx) => {
-    if (ctx.req.header('sec-fetch-dest') != 'iframe') {
+    const url = new URL(ctx.req.url);
+    if (url.hostname != 'www.temp.skymeshdynamics.com') {
         return ctx.redirect('https://temp.skymeshdynamics.com/');
     }
-    const url = new URL(ctx.req.url);
     const paths = url.pathname.split('/');
     const firstPath = paths[1];
     if (paths.length > 2) {
