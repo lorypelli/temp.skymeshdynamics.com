@@ -32,6 +32,7 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
             >
                 <input
                     name="path"
+                    autocomplete="off"
                     style={{
                         outline: 'none',
                         padding: '.5rem',
