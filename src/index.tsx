@@ -24,7 +24,6 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
                     margin: 0,
                     padding: '.30rem',
                     rowGap: '.30rem',
