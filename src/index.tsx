@@ -11,31 +11,49 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
             />
             <title>temp.skymeshdynamics.com</title>
         </head>
-        <body style={{ margin: 0 }}>
+        <body
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh',
+                margin: 0,
+            }}
+        >
             <form
                 method="post"
                 style={{
-                    position: 'absolute',
                     display: 'flex',
-                    columnGap: '.30rem',
-                    margin: '.30rem',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    margin: 0,
+                    padding: '.30rem',
+                    rowGap: '.30rem',
                 }}
             >
                 <input
                     name="path"
                     autofocus
-                    style={{ padding: '.5rem', outline: 'none' }}
+                    style={{
+                        outline: 'none',
+                        padding: '.5rem',
+                    }}
                 />
                 <button
                     type="submit"
-                    style={{ padding: '.5rem', outline: 'none' }}
+                    style={{
+                        outline: 'none',
+                        padding: '.5rem',
+                    }}
                 >
                     Check
                 </button>
             </form>
             <iframe
                 src={`https://emailfake.com/temp.skymeshdynamics.com/${props.path}`}
-                style={{ width: '100%', height: '100%', border: 0 }}
+                style={{
+                    border: 0,
+                    flex: 1,
+                }}
             ></iframe>
         </body>
     </html>
