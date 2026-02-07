@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
 import { FC } from 'hono/jsx';
+import { email } from 'zod';
 
-const App: FC<{ path: string }> = (props: { path: string }) => (
+const TEMP_EMAIL = 'temp.skymeshdynamics.com';
+
+const App: FC<{ path: string }> = (props) => (
     <html lang="en">
         <head>
             <meta charset="UTF-8" />
@@ -9,7 +12,7 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
                 name="viewport"
                 content="width=device-width, initial-scale=1"
             />
-            <title>temp.skymeshdynamics.com</title>
+            <title>{TEMP_EMAIL}</title>
         </head>
         <body
             style={{
@@ -49,7 +52,7 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
                 </button>
             </form>
             <iframe
-                src={`https://emailfake.com/temp.skymeshdynamics.com/${props.path}`}
+                src={`https://emailfake.com/${TEMP_EMAIL}/${props.path}`}
                 style={{
                     border: 0,
                     flex: 1,
@@ -66,10 +69,13 @@ app.all('/', async (ctx) => {
         !ctx.req.url.includes('127.0.0.1:8787') &&
         ctx.req.header('sec-fetch-dest') != 'iframe'
     ) {
-        return ctx.redirect('https://temp.skymeshdynamics.com/');
+        return ctx.redirect(`https://${TEMP_EMAIL}/`);
     }
-    const body = await ctx.req.parseBody();
-    return ctx.render(<App path={body.path?.toString() || ''} />);
+    const { path } = await ctx.req.parseBody();
+    if (path && !email().safeParse(`${path}@${TEMP_EMAIL}`).success) {
+        return ctx.redirect('/');
+    }
+    return ctx.render(<App path={path?.toString() || ''} />);
 });
 
 app.all('*', (ctx) => ctx.redirect('/'));
