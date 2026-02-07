@@ -32,7 +32,6 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
             >
                 <input
                     name="path"
-                    autofocus
                     style={{
                         outline: 'none',
                         padding: '.5rem',
