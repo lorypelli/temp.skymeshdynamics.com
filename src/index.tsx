@@ -41,6 +41,7 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
                 <button
                     type="submit"
                     style={{
+                        cursor: 'pointer',
                         outline: 'none',
                         padding: '.5rem',
                     }}
