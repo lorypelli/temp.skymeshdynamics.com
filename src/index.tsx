@@ -23,6 +23,7 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
             >
                 <input
                     name="path"
+                    autofocus
                     style={{ padding: '.5rem', outline: 'none' }}
                 />
                 <button
@@ -43,16 +44,16 @@ const App: FC<{ path: string }> = (props: { path: string }) => (
 const app = new Hono();
 
 app.all('/', async (ctx) => {
-    if (ctx.req.header('sec-fetch-dest') != 'iframe') {
+    if (
+        !ctx.req.url.includes('127.0.0.1:8787') &&
+        ctx.req.header('sec-fetch-dest') != 'iframe'
+    ) {
         return ctx.redirect('https://temp.skymeshdynamics.com/');
     }
     const body = await ctx.req.parseBody();
-    const paths = (body.path || '').toString().split('/');
-    const firstPath = paths[0];
-    if (paths.length > 1) {
-        return ctx.redirect(`/?path=${firstPath}`);
-    }
-    return ctx.render(<App path={firstPath || ''} />);
+    return ctx.render(<App path={body.path?.toString() || ''} />);
 });
+
+app.all('*', (ctx) => ctx.redirect('/'));
 
 export default app;
