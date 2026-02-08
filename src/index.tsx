@@ -4,7 +4,17 @@ import { email } from 'zod';
 
 const TEMP_EMAIL = 'temp.skymeshdynamics.com';
 
-const App: FC<{ path: string }> = (props) => (
+const MAX_LENGTH = 230;
+
+const withPrefix = (user: string | undefined) => {
+    if (user && user.length <= MAX_LENGTH) {
+        return `${user}@${TEMP_EMAIL}`;
+    } else {
+        return TEMP_EMAIL;
+    }
+};
+
+const App: FC<{ user: string | undefined }> = ({ user }) => (
     <html lang="en">
         <head>
             <meta charset="UTF-8" />
@@ -12,7 +22,7 @@ const App: FC<{ path: string }> = (props) => (
                 name="viewport"
                 content="width=device-width, initial-scale=1"
             />
-            <title>{TEMP_EMAIL}</title>
+            <title>{withPrefix(user)}</title>
         </head>
         <body
             style={{
@@ -23,7 +33,7 @@ const App: FC<{ path: string }> = (props) => (
             }}
         >
             <form
-                method="post"
+                method="get"
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -33,8 +43,10 @@ const App: FC<{ path: string }> = (props) => (
                 }}
             >
                 <input
-                    name="path"
+                    name="u"
                     autocomplete="off"
+                    maxlength={MAX_LENGTH}
+                    value={user}
                     style={{
                         outline: 'none',
                         padding: '.5rem',
@@ -52,7 +64,7 @@ const App: FC<{ path: string }> = (props) => (
                 </button>
             </form>
             <iframe
-                src={`https://emailfake.com/${TEMP_EMAIL}/${props.path}`}
+                src={`https://emailfake.com/${withPrefix(user)}`}
                 style={{
                     border: 0,
                     flex: 1,
@@ -71,11 +83,11 @@ app.all('/', async (ctx) => {
     ) {
         return ctx.redirect(`https://${TEMP_EMAIL}/`);
     }
-    const { path } = await ctx.req.parseBody();
-    if (path && !email().safeParse(`${path}@${TEMP_EMAIL}`).success) {
+    const user = ctx.req.query('u');
+    if (user && !email().safeParse(withPrefix(user)).success) {
         return ctx.redirect('/');
     }
-    return ctx.render(<App path={path?.toString() || ''} />);
+    return ctx.render(<App user={user?.toString()} />);
 });
 
 app.all('*', (ctx) => ctx.redirect('/'));
