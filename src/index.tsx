@@ -14,7 +14,7 @@ const withPrefix = (user: string | undefined) => {
     }
 };
 
-const App: FC<{ user: string | undefined }> = ({ user }) => (
+const App: FC<{ u: string | undefined }> = ({ u }) => (
     <html lang="en">
         <head>
             <meta charset="UTF-8" />
@@ -22,7 +22,7 @@ const App: FC<{ user: string | undefined }> = ({ user }) => (
                 name="viewport"
                 content="width=device-width, initial-scale=1"
             />
-            <title>{withPrefix(user)}</title>
+            <title>{withPrefix(u)}</title>
         </head>
         <body
             style={{
@@ -46,7 +46,7 @@ const App: FC<{ user: string | undefined }> = ({ user }) => (
                     name="u"
                     autocomplete="off"
                     maxlength={MAX_LENGTH}
-                    value={user}
+                    value={u}
                     style={{
                         outline: 'none',
                         padding: '.5rem',
@@ -64,7 +64,7 @@ const App: FC<{ user: string | undefined }> = ({ user }) => (
                 </button>
             </form>
             <iframe
-                src={`https://emailfake.com/${withPrefix(user)}`}
+                src={`https://emailfake.com/${withPrefix(u)}`}
                 style={{
                     border: 0,
                     flex: 1,
@@ -87,7 +87,7 @@ app.all('/', async (ctx) => {
     if (user && !email().safeParse(withPrefix(user)).success) {
         return ctx.redirect('/');
     }
-    return ctx.render(<App user={user?.toString()} />);
+    return ctx.render(<App u={user} />);
 });
 
 app.all('*', (ctx) => ctx.redirect('/'));
