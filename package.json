@@ -7,6 +7,7 @@
         "format": "prettier --write ."
     },
     "devDependencies": {
+        "@types/html-minifier-terser": "^7.0.2",
         "@vercel/hono": "^0.2.39",
         "prettier": "^3.8.1",
         "prettier-plugin-organize-imports": "^4.3.0",
@@ -15,6 +16,7 @@
     },
     "dependencies": {
         "hono": "^4.11.9",
+        "html-minifier-terser": "^7.2.0",
         "zod": "^4.3.6"
     }
 }

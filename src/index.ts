@@ -1,10 +1,12 @@
 import { Hono } from 'hono';
 import { html } from 'hono/html';
+import { minify } from 'html-minifier-terser';
 import { email } from 'zod';
 
 const app = new Hono();
 
 const App = (props: { t: string; u: string }) => html`
+    <!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="UTF-8" />
@@ -33,7 +35,12 @@ app.all('*', (ctx) => {
     if (user && !email().safeParse(`${user}@${TEMP_EMAIL}`).success) {
         return ctx.redirect('/');
     }
-    return ctx.html(App({ t: TEMP_EMAIL, u: user }));
+    return ctx.html(
+        minify(App({ t: TEMP_EMAIL, u: user }).toString(), {
+            collapseWhitespace: true,
+            minifyCSS: true,
+        }),
+    );
 });
 
 export default app;
