@@ -20,7 +20,7 @@ const App = (props: { t: string; u: string }) => html`
             style="display: flex; flex-direction: column; height: 100vh; margin: 0;"
         >
             <iframe
-                src="https://emailfake.com/temp.skymeshdynamics.com/${props.u}"
+                src="https://emailfake.com/${props.t}/${props.u}"
                 style="border: 0; flex: 1;"
             ></iframe>
         </body>
