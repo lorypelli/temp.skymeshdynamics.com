@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { Hono } from 'hono';
 import { html } from 'hono/html';
 import { minify } from 'html-minifier-terser';
@@ -5,7 +6,7 @@ import { email } from 'zod';
 
 const app = new Hono();
 
-const App = (props: { t: string; u: string }) => html`
+const App = (props: { e: string }) => html`
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -14,13 +15,13 @@ const App = (props: { t: string; u: string }) => html`
                 name="viewport"
                 content="width=device-width, initial-scale=1"
             />
-            <title>${props.u ? `${props.u} | ${props.t}` : props.t}</title>
+            <title>${props.e}</title>
         </head>
         <body
             style="display: flex; flex-direction: column; height: 100vh; margin: 0;"
         >
             <iframe
-                src="https://emailfake.com/${props.t}/${props.u}"
+                src="https://tinyhost.shop/${props.e}"
                 style="border: 0; flex: 1;"
             ></iframe>
         </body>
@@ -31,12 +32,13 @@ const TEMP_EMAIL = 'temp.skymeshdynamics.com';
 
 app.all('*', (ctx) => {
     const url = new URL(ctx.req.url);
-    const user = url.pathname.slice(1);
-    if (user && !email().safeParse(`${user}@${TEMP_EMAIL}`).success) {
+    const user = url.pathname.slice(1) || faker.internet.username();
+    const e = `${user.toLowerCase()}@${TEMP_EMAIL}`;
+    if (!email().safeParse(e).success) {
         return ctx.redirect('/');
     }
     return ctx.html(
-        minify(App({ t: TEMP_EMAIL, u: user }).toString(), {
+        minify(App({ e }).toString(), {
             collapseWhitespace: true,
             minifyCSS: true,
         }),

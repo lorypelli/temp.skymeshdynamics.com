@@ -1,22 +1,22 @@
 {
-    "name": "stats",
+    "name": "temp.skymeshdynamics.com",
     "private": true,
     "version": "0.0.0",
     "type": "module",
     "scripts": {
+        "dev": "bun run src/index.ts",
         "format": "prettier --write ."
     },
     "devDependencies": {
         "@types/html-minifier-terser": "^7.0.2",
-        "@vercel/hono": "^0.2.39",
-        "prettier": "^3.8.1",
+        "prettier": "^3.9.5",
         "prettier-plugin-organize-imports": "^4.3.0",
-        "typescript": "^5.9.3",
-        "vercel": "^50.17.1"
+        "typescript": "^5.9.3"
     },
     "dependencies": {
-        "hono": "^4.11.9",
+        "@faker-js/faker": "^10.5.0",
+        "hono": "^4.12.30",
         "html-minifier-terser": "^7.2.0",
-        "zod": "^4.3.6"
+        "zod": "^4.4.3"
     }
 }
